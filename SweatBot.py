@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import discord
+from discord.ext import commands
 import json
 import requests
-from discord.ext import commands
 from decouple import config
 import osrs_stats
 from io import BytesIO
@@ -35,15 +35,13 @@ CHANNELS = {
 SELF_SERVE_ROLES = ['osrs', 'chess', 'spikeball', 'rock-climber', 'road trippin\'', 'hiker', 'memer', 'board games', 'movies', 'i\'m sus']
 
 # Define the bot client.
-client = commands.Bot(command_prefix='!')
+intents = discord.Intents.default()
+intents.message_content = True
+client = commands.Bot(command_prefix='!', intents=intents)
 
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user.name}!')
-    # for guild in client.guilds:
-    #     print(guild.roles)
-    #     for channel in guild.text_channels:
-    #         print('\'{0}\': {1}'.format(channel.name, channel.id))
 
 @client.command()
 async def test(ctx):
