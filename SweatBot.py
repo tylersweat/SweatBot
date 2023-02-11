@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import discord
 import json
 import requests
@@ -37,7 +39,7 @@ client = commands.Bot(command_prefix='!')
 
 @client.event
 async def on_ready():
-    print('Logged in as {0}!'.format(client.user.name))
+    print(f'Logged in as {client.user.name}!')
     # for guild in client.guilds:
     #     print(guild.roles)
     #     for channel in guild.text_channels:
@@ -59,16 +61,20 @@ async def osrs(ctx):
         pass
 
 @client.command()
-async def stats(ctx, rsn: str):
+async def stats(ctx, *rsn: str):
     if ctx.message.channel.name != 'osrs':
         await ctx.message.reply('Try that command in the #osrs channel!')
     else:
+        _rsn = ' '.join(rsn)
         img = BytesIO()
-        osrs_stats.create_stats(rsn, img)
-        await ctx.channel.send(content='Stats for {0}'.format(rsn),file=discord.File(img,'{0}_stats.png'.format(rsn)))
+        osrs_stats.create_stats(_rsn, img)
+        await ctx.channel.send(content=f'Stats for {_rsn}',file=discord.File(img,f'{_rsn}_stats.png'))
+        #await ctx.message.delete(delay=60)  # Delete original message after 60s to clear up channel.
+
 
 @stats.error
 async def stats_error(ctx, error):
+    print(error)
     await ctx.message.delete()
 
 @client.command()

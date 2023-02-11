@@ -1,3 +1,6 @@
+import sys
+print(sys.version)
+
 from PIL import Image, ImageFont, ImageDraw
 from OSRSBytes import Hiscores
 
